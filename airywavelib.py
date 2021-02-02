@@ -1,4 +1,5 @@
 # Airywaves python library
+import numpy as np
 
 def findWaveNumber(waveFrequency, waterDepth=None, IterMax=200, TOL=10.e-5):
     '''
