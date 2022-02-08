@@ -107,11 +107,11 @@ def filterDataFrame(df, fcut, fs):
 
 if __name__=="__main__":
 
-    #datapath = "//neptun.marin.ntnu.no/davidkr/Lab/data/numpy"
-    datapath2 = "C:/Users/davidkr/source/tmr4247_local/Data/numpy"
+    datapath = "//path/to/data/files"
+    datafile = "dataFileName"
 
     # Import data:
-    df = importDataFrame(datapath2, 'test2.npz')
+    df = importDataFrame(datapath, datafile)
 
     # Rename data columns with more convenient column names:
     modkeys=['Time', 'eta3', 'F2', 'F3', 'acc3', 'WP2']
