@@ -107,14 +107,15 @@ def filterDataFrame(df, fcut, fs):
 
 if __name__=="__main__":
 
-    datapath = "//path/to/data/files"
-    datafile = "dataFileName"
+    datapath = r"C:\_work\ModelTestData\TMR4247\wavecal\numpy"
+    datafile = "Wave8001_8011.npz"
 
     # Import data:
     df = importDataFrame(datapath, datafile)
 
     # Rename data columns with more convenient column names:
-    modkeys=['Time', 'eta3', 'F2', 'F3', 'acc3', 'WP2']
+    #modkeys=['Time', 'eta3', 'F2', 'F3', 'acc3', 'WP2']
+    modkeys=['Time', 'eta3', 'WP1', 'WP2', 'F2', 'F3', 'acc_rig', 'acc3']
     column_names = dict(zip(df.keys(), modkeys)) # dict{oldname: newname}
     df.rename(columns=column_names, inplace=True)
 
