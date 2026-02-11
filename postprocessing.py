@@ -68,24 +68,29 @@ def getZeroUpcrossingPeriod(time, signal):
     return Tper
 
 
-def getFilterCoeffs(fs, fcut, order=3):
+def getFilterCoeffs(fs, fcut=[], filtertype='low', order=3):
     '''
     Compute filter coefficients for a Butterworth digital filter of given order
     :param fs: sampling frequency [Hz]
-    :param fcut: cut frequency [Hz]
+    :param fcut: list of cut frequencies [Hz]
+    :param filtertype: either low (pass), high (pass) or band (pass)
     :param order: filter order
     :return: b, a filter coefficients
     '''
     # Construct Butterworth filter
     nyq = 0.5*fs
-    fc = fcut/nyq
-    b, a = sp.butter(order, fc)
+    if filtertype=='band':
+        assert len(fcut)==2, "filter cut-frequency mismatch for band pass filter"
+        fc = [fcut[0]/nyq, fcut[1]/nyq]
+    else:
+        fc = fcut[0]/nyq
+    b, a = sp.butter(order, fc, btype=filtertype)
     return b, a
 
-def filterDataFrame(df, fcut, fs):
+def filterDataFrame(df, fcut, fs, filtertype='low'):
 
     # Construct a Butterworth low-pass filter with given cut-frequency
-    b, a = getFilterCoeffs(fs, fcut)
+    b, a = getFilterCoeffs(fs, fcut, filtertype=filtertype)
 
     # Data columns to filter (exclude time vector)
     #datacolumns = [key for key in df.keys() if not key.startswith('Time')]
@@ -101,6 +106,20 @@ def filterDataFrame(df, fcut, fs):
     df_lp.set_index("Time", inplace=True)
 
     return df_lp
+
+def filterData(data, fcut, fs, filtertype='low'):
+
+    # Construct a Butterworth low-pass filter with given cut-frequency
+    b, a = getFilterCoeffs(fs, fcut, filtertype=filtertype)
+
+    # Data columns to filter (exclude time vector)
+    #datacolumns = [key for key in df.keys() if not key.startswith('Time')]
+
+    # Filter data
+    #df_lp_np = sp.filtfilt(b, a, df[datacolumns].iloc[:], axis=0)
+    data_filtered = sp.filtfilt(b, a, data, axis=0)
+
+    return data_filtered
 
 
 
